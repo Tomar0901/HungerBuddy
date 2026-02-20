@@ -1,15 +1,20 @@
 "use client";
 
-import { ChevronLeft,UserPen } from "lucide-react";
+import { useState } from "react";
+import { ChevronLeft, UserPen } from "lucide-react";
 import { Typography, Avatar, Box, Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
-import User from "../components/User";
 
 const AccountDetails = () => {
   const router = useRouter();
 
-  const user = JSON.parse(localStorage.getItem("USER"));
-  const userData = Object.values(user || {})[0];
+  const [userData] = useState(() => {
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(localStorage.getItem("USER"));
+      return Object.values(user || {})[0];
+    }
+    return null;
+  });
 
   return (
     <Box
@@ -67,17 +72,12 @@ const AccountDetails = () => {
               boxShadow: "0 8px 20px rgba(99,102,241,0.4)",
             }}
           >
-               <UserPen/>
+            <UserPen />
           </Avatar>
 
-          <Typography
-            variant="h6"
-            sx={{ mt: 1.5, fontWeight: 600 }}
-          >
-            {userData?.studentname}
+          <Typography variant="h6" sx={{ mt: 1.5, fontWeight: 600 }}>
+            {userData?.studentname || "User"}
           </Typography>
-
-         
         </Box>
 
         <Divider sx={{ mb: 2 }} />
@@ -88,7 +88,9 @@ const AccountDetails = () => {
           <InfoRow label="Email" value={userData?.emailid} />
           <InfoRow
             label="Address"
-            value={`${userData?.current_address} - ${userData?.current_pincode}`}
+            value={`${userData?.current_address || ""} - ${
+              userData?.current_pincode || ""
+            }`}
           />
         </Box>
       </Box>
