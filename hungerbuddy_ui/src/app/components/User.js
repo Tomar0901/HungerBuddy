@@ -1,28 +1,25 @@
 "use client"
+
 import Image from "next/image";
 import { useState } from "react";
 import { Badge, Avatar } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { Block } from "@mui/icons-material";
 import AccountMenu from "../Account/MyAccount";
 
-
 export default function User({ totalItems }) {
-  var navigate = useRouter()
-  // var user=useSelector((state)=>state.user)
-  var user = JSON.parse(localStorage.getItem("USER"))
-  
 
-  var userData
-  if (user == null) {
-    userData = "Not Login"
-  }
-  else {
-    userData = Object.values(user)[0]
-  }
+  const navigate = useRouter();
 
-const [anchorEl, setAnchorEl] = useState(null);
+  // ✅ SSR Safe + No ESLint Error
+  const [user] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("USER");
+      return storedUser ? JSON.parse(storedUser) : null;
+    }
+    return null;
+  });
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleAvatarClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,25 +29,20 @@ const [anchorEl, setAnchorEl] = useState(null);
     setAnchorEl(null);
   };
 
+  const userData = user ? Object.values(user)[0] : null;
 
   return (
-    <>
     <div
       style={{
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        gap: "5px",          // aur space
+        gap: "8px",
         padding: "10px 20px",
       }}
-
     >
-
-
+      {/* 🛒 Cart */}
       <Badge badgeContent={totalItems} color="error">
-
-
-
         <div
           onClick={() => navigate.push("/cart")}
           style={{
@@ -63,60 +55,29 @@ const [anchorEl, setAnchorEl] = useState(null);
             background: "#000",
           }}
         >
-
-          <Image src="/images/cart.png" width={25} height={25} alt="" />
+          <Image src="/images/cart.png" width={25} height={25} alt="cart" />
         </div>
       </Badge>
-      <div style={{ position: "relative", }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            top: 10,
-            left: 2,
-            position: "absolute",
-            width: 45,
-            height: 15,
-            background: "#30336b",
-            border: "0.5 solid #fff",
-            borderRadius: 10,
-          }}
-        >
-          <span style={{ color: "#fff", fontSize: 9, fontWeight: "bold" }}>
-            &#8377;20
-          </span>
-        </div>
-      </div>
 
-
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          background: "#000",
-        }}
-      >
-        <Image src="/images/wallet.jpg" width={25} height={25} alt="" />
-      </div>
-      {userData !== "Not Login" ? (
-         <>
-          <Avatar onClick={handleAvatarClick}  sx={{ background: "#4af71f", border:"1px solid seagreen", cursor: "pointer",
-  "&:hover": {
-    transform: "scale(1.05)",
-  }, }}>
-            {userData?.studentname?.charAt(0).toUpperCase()}
+      {/* 👤 User Section */}
+      {userData ? (
+        <>
+          <Avatar
+            onClick={handleAvatarClick}
+            sx={{
+              background: "#4af71f",
+              border: "1px solid seagreen",
+              cursor: "pointer",
+              "&:hover": { transform: "scale(1.05)" },
+            }}
+          >
+            {userData?.studentname?.charAt(0)?.toUpperCase()}
           </Avatar>
-          <AccountMenu
-      anchorEl={anchorEl}
-      handleClose={handleClose}
-    />
 
+          <AccountMenu
+            anchorEl={anchorEl}
+            handleClose={handleClose}
+          />
         </>
       ) : (
         <div
@@ -131,15 +92,9 @@ const [anchorEl, setAnchorEl] = useState(null);
             background: "#000",
           }}
         >
-          <Image src="/images/user.png" height={25} width={25} alt="" />
+          <Image src="/images/user.png" height={25} width={25} alt="user" />
         </div>
       )}
-
-     
-  
     </div>
-     
-    </>
-  )
+  );
 }
-
