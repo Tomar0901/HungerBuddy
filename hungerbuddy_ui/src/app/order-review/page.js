@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Grid,Button } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -30,7 +30,12 @@ export default function OrderReviewPage() {
   const [drawerStatus, setDrawerStatus] = useState(false);
 const { error, isLoading, Razorpay } = useRazorpay();
  // var user=useSelector((state)=>state.user)
- var user=JSON.parse(localStorage.getItem('USER'))
+//  var user=JSON.parse(localStorage.getItem('USER'))
+const [user, setUser] = useState(null)
+ useEffect(() => {
+    const storedUser =JSON.parse(localStorage.getItem("USER"))
+    setUser(storedUser)
+  }, [])
  var btnMessage 
  var userData
  if(user==null)

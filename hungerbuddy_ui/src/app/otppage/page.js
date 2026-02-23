@@ -1,4 +1,5 @@
 "use client"
+
 import { Grid, TextField } from "@mui/material";
 import { OtpInput } from 'reactjs-otp-input';
 import { useEffect, useState } from "react";
@@ -8,11 +9,15 @@ import { useRouter,usePathname,useSearchParams} from "next/navigation"
 export default function LoginOtpPage() {
   const [gOtp, setGotp] = useState(''); 
   const [otp, setOtp] = useState('');
-  const user=useSelector((state)=>state.user)
-  const mobileno=Object.keys(user)[0]
+ const user = useSelector((state) => state.user)
+const mobileno = Object.keys(user || {})[0] || ""
   const navigate=useRouter()
- const param=useSearchParams()
- const from=param.get("from")
+const param = useSearchParams()
+const [from, setFrom] = useState(null)
+
+useEffect(() => {
+  setFrom(param.get("from"))
+}, [param])
   function checkOtp()
   {
      if(gOtp==otp)
