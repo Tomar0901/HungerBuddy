@@ -9,12 +9,12 @@ import User from "../components/User";
 const AccountDetails = () => {
   const router = useRouter();
 
-  // const user = JSON.parse(localStorage.getItem("USER"));
-  const [user, setUser] = useState(null)
-   useEffect(() => {
-      const storedUser =JSON.parse(localStorage.getItem("USER"))
-      setUser(storedUser)
-    }, [])
+  const user = JSON.parse(localStorage.getItem("USER"));
+  // const [user, setUser] = useState(null)
+  //  useEffect(() => {
+  //     const storedUser =JSON.parse(localStorage.getItem("USER"))
+  //     setUser(storedUser)
+  //   }, [])
   const userData = Object.values(user || {})[0];
 
   return (
