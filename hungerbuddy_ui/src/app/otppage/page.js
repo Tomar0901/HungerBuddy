@@ -3,16 +3,23 @@ import { Grid, TextField } from "@mui/material";
 import { OtpInput } from 'reactjs-otp-input';
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { generateOTP } from "../../services/fetchNodeServices";
-import { useRouter,usePathname,useSearchParams} from "next/navigation"
+import { generateOTP } from "../services/FetchNodeServices";
+import { useRouter,usePathname} from "next/navigation"
 export default function LoginOtpPage() {
   const [gOtp, setGotp] = useState(''); 
   const [otp, setOtp] = useState('');
   const user=useSelector((state)=>state.user)
   const mobileno=Object.keys(user)[0]
   const navigate=useRouter()
- const param=useSearchParams()
- const from=param.get("from")
+
+
+const [from, setFrom] = useState(null);
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  setFrom(params.get("from"));
+}, []);
+
   function checkOtp()
   {
      if(gOtp==otp)

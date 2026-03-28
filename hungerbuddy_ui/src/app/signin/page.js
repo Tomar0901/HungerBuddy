@@ -1,17 +1,25 @@
 "use client"
 import { Grid, TextField } from "@mui/material";
 import { generateOTP, postData } from "../services/FetchNodeServices";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { useSearchParams } from "next/navigation";
+
 export default function LoginPage(){
  const [mobileNo,setMobileNo]=useState('')
  const [user,setUser]=useState('')
  const [message,setMessage]=useState('')
  const navigate=useRouter()
- const param=useSearchParams()
- const from=param.get("from")
+
+
+
+const [from, setFrom] = useState(null);
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  setFrom(params.get("from"));
+}, []);
+
   const dispatch=useDispatch()
 
 const handleClick=async()=>{
