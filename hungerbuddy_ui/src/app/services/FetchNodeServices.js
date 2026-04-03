@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-const serverURL = 'http://localhost:5000'
+const serverURL = 'https://hungerbuddy-backend.onrender.com'
 
 function generateOTP() {
      var otp = parseInt(Math.random() * 899999) + 100000
